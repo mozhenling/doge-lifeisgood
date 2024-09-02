@@ -1,0 +1,8 @@
+Versions:
+	Python: 3.10.13
+	PyTorch: 2.1.2
+	Torchvision: 0.16.2
+	CUDA: 12.1
+	CUDNN: 8900
+	NumPy: 1.26.4
+	PIL: 9.5.0
