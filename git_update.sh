@@ -4,7 +4,7 @@ echo '------- update git and remote --------'
 
 git add .
 
-git commit . -m 'simplification'
+git commit . -m 'add an example'
 
 git push origin master
 
