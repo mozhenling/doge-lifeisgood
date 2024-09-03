@@ -13,10 +13,8 @@ from params.alg_params import default_hparams, random_hparams
 from algorithms import alg_selector, optimization
 from datautils import data_process, bed_dataloaders as dataloader, dataset_selector
 from params.seedutils import seed_everything_update
-########################################################################################################################
-#------------------------------------------------------------ Main
-########################################################################################################################
-#------------------------------------------------------------ re-set imporatant params for each algorithm (for runs of no commind lines)
+
+
 def train(args_dict, sweep_start_time= time.time(), is_time_out=False, zip_output_time=None, start_step = 0, algorithm_dict = None, t_sne=False):
     """
     # If we ever want to implement checkpointing, just persist these values
