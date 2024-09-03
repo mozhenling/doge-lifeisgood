@@ -4,7 +4,7 @@ echo '------- update git and remote --------'
 
 git add .
 
-git commit . -m 'update algs'
+git commit . -m 'update datasets'
 
 git push origin master
 
