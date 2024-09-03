@@ -64,11 +64,6 @@ def _hparams(algorithm, dataset, random_seed, args):
         _hparam('keeping', 1,  lambda r: r.uniform(0.75, 1))
         _hparam('swapping_loss_weight', 1, lambda r: 10 ** r.uniform(-1.5, 0))
 
-    # -- Mixup
-    elif algorithm in ["Q_Mix"]:
-        _hparam('q', 0.5, lambda r: r.uniform(0, 1))
-        _hparam('mixup_alpha', 0.2, lambda r: 10 ** r.uniform(-1, 1))
-
     # ------------------------------------------------------------------------
     elif algorithm in ["iDAG", "iDAGamp", "iDAGCMNIST"]:
         _hparam("dag_anneal_steps",int(args.steps * 0.1),

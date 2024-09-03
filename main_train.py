@@ -16,16 +16,6 @@ if __name__ == "__main__":
 
     args.device = device
 
-    ##############################
-    #---------test
-    args.algorithm = 'Lifeisgood'
-    args.dataset = 'CWRU_Bearing'
-    args.test_envs = [0]
-    args.data_dir = r'C:\Users\MSI-NB\Desktop\Life-is_prj\0-exp\datasets'
-    args.output_dir = r'C:\Users\MSI-NB\Desktop\Life-is_prj\0-exp\outputs'
-    # args.data_dir = r'E:\0-CityU\0-doge-data\dogedata_Drone Fault'
-    #############################
-
     args.output_dir = os.path.join(args.output_dir,
                                     args.dataset + '_'+ args.algorithm+ '_test_ids_' + str(args.test_envs))
 
