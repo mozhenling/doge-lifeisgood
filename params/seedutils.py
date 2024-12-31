@@ -5,6 +5,17 @@ import os
 import torch
 import hashlib
 
+# Set random seed for reproducibility
+def set_seed(seed: int):
+    """
+    Set seed for reproducibility across PyTorch, NumPy, and Python random.
+    """
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+
 def seed_everything_update(seed=42, remark = 'default'):
     """
     Seed everything.

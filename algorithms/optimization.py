@@ -74,26 +74,25 @@ def get_params(alg, args, inner=False, alias=True, isteacher=False):
     return params
 
 #--------------------------------------------- accuracy in the optimization
-def accuracy(network, loader, weights, device, name, args):
+def accuracy(algorithm, loader, weights, device, name, args):
 
     acc_dict = {}
 
-    network.eval()
+    algorithm.eval()
     with torch.no_grad():
-        acc_dict['default'] = get_acc(network, loader, weights, device, name, args)
-    network.train()
+        acc_dict['default'] = get_acc(algorithm, loader, weights, device, name, args)
+    algorithm.train()
 
     return max(list(acc_dict.values()))
 
-def get_acc(network, loader, weights, device, name, args):
+def get_acc(algorithm, loader, weights, device, name, args):
     correct = 0
     total = 0
     weights_offset = 0
     for x, y in loader:
         x = x.to(device)
         y = y.to(device)
-
-        p = network.predict(x)
+        p = algorithm.predict(x)
         if weights is None:
             batch_weights = torch.ones(len(x))
         else:

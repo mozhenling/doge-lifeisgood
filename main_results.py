@@ -6,7 +6,7 @@ import sys
 import argparse
 import numpy as np
 
-from oututils import model_selection, reporting, os_utils, print_outs
+from oututils import selections, reporting, os_utils, print_outs
 
 
 if __name__ == "__main__":
@@ -17,8 +17,12 @@ if __name__ == "__main__":
     parser.add_argument("--input_dir", type=str, default=r'./outputs/sweep_outs')
     parser.add_argument("--result_dir", type=str, default=r'./outputs/results')
     parser.add_argument("--latex", action="store_true")
+    parser.add_argument("--selections", nargs='+', type=str, default=['IID'], help='IID, OneOut, Oracle')
     args = parser.parse_args()
 
+    SELECTION_METHODS = selections.get_methods(args.selections)
+
+    # random grid
     records = reporting.load_records(args.input_dir)
 
     results_file = "0_sweep_results.tex" if args.latex else "0_sweep_results.txt"
@@ -34,12 +38,6 @@ if __name__ == "__main__":
         print("% Total records:", len(records))
     else:
         print("Total records:", len(records))
-
-    SELECTION_METHODS = [
-        model_selection.IIDAccuracySelectionMethod, # training domain validation methods
-        # model_selection.LeaveOneOutSelectionMethod, # show results when args.single_test_envs = False (costly)
-        # model_selection.OracleSelectionMethod,
-    ]
 
     for selection_method in SELECTION_METHODS:
         if args.latex:

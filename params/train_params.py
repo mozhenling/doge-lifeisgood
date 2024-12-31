@@ -55,6 +55,8 @@ def get_args():
     parser.add_argument('--n_hparams_from', type=int, default=0)
     parser.add_argument('--hparams_search_mode', type=str, default=None)
     parser.add_argument('--sweep_test_envs', type=eval, default=None)
+    parser.add_argument('--zip_output_time', type=float, default=42900,
+                        help='the time (in seconds) to stop training and zip the output. e.g.,42900=11h55m')
 
     args = parser.parse_args()
     return args

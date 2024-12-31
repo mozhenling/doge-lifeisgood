@@ -11,7 +11,7 @@ def get_nets(input_shape, num_classes, num_domains, hparams, args, net_whole=Fal
             classifier = nets.Classifier(n_outputs,  num_classes)
             return featurizer, classifier
 
-    elif args.nets_base in ['diag_nets']:
+    elif args.nets_base in ['diag_nets','LeNet', 'Transformer']:
         from networks import diag_nets as nets
         if net_whole:
             return nets

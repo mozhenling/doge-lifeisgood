@@ -180,7 +180,7 @@ def _hparams(algorithm, dataset, random_seed, args):
 
     # Dataset-and-algorithm-specific hparam definitions. Each block of code
     # below corresponds to exactly one hparam. Avoid nested conditionals.
-    if dataset in SMALL_DATASETS:
+    if dataset in SMALL_DATASETS and args.nets_base in ['diag_nets', 'LeNet']:
         _hparam('lr', 1e-3, lambda r: 10 ** r.uniform(-4.5, -2.5))
     else:
         _hparam('lr', 5e-5, lambda r: 10 ** r.uniform(-5, -3.5))
@@ -190,8 +190,10 @@ def _hparams(algorithm, dataset, random_seed, args):
     else:
         _hparam('weight_decay', 0., lambda r: 10 ** r.uniform(-6, -2))
 
-    if dataset in SMALL_DATASETS:
+    if dataset in SMALL_DATASETS and args.nets_base in ['diag_nets', 'LeNet']:
         _hparam('batch_size', 32, lambda r: 32) # default 64 int(2 ** r.uniform(3, 9))
+    elif  args.nets_base in ['Transformer']:
+        _hparam('batch_size', 16, lambda r: 16)
     elif algorithm == 'ARM':
         _hparam('batch_size', 8, lambda r: 8)
     elif dataset == 'DomainNet':

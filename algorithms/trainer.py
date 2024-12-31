@@ -15,17 +15,14 @@ from datautils import data_process, bed_dataloaders as dataloader, dataset_selec
 from params.seedutils import seed_everything_update
 
 
-def train(args_dict, sweep_start_time= time.time(), is_time_out=False, zip_output_time=None, start_step = 0, algorithm_dict = None, t_sne=False):
+def train(args_dict, sweep_start_time= time.time(), is_time_out=False, algorithm_dataset_back=False, algorithm_dict = None,
+          zip_output_time=None, start_step = 0):
     """
     # If we ever want to implement checkpointing, just persist these values
     # every once in a while, and then load them from disk here.
     start_step = 0
     algorithm_dict = None
     """
-
-    # -- for visualization
-    test_xy_dict = {'feature':None, 'label':None}
-    train_xy_dict = {'feature':None, 'label':None}
 
     # ------------------------------------------------------------ Versions of your packages
     print("Versions:")
@@ -74,7 +71,7 @@ def train(args_dict, sweep_start_time= time.time(), is_time_out=False, zip_outpu
         print('\t{}: {}'.format(k, v))
     # -- update the augmentation number for small datasets
     # args.aug_num = hparams['aug_num']
-#------------------------------------------------------------ Limit randomness
+    #------------------------------------------------------------ Limit randomness
     """
     You can configure PyTorch to avoid using nondeterministic
     algorithms for some operations, so that multiple calls to 
@@ -143,6 +140,13 @@ def train(args_dict, sweep_start_time= time.time(), is_time_out=False, zip_outpu
         algorithm.load_state_dict(algorithm_dict)
 
     algorithm.to(device)
+    if algorithm_dataset_back:
+        # For convenience in being consistent with print_outs results
+        # Here, we only output in_splits samples for train. and test.
+        # Modify it if you wish
+        test_loaders_out = [ld for i, ld in enumerate(eval_loaders) if i in args.test_envs]
+        train_loaders_out = [ld for i, ld in enumerate(train_loaders) if i not in args.test_envs]
+        return algorithm, dataset, train_loaders_out, test_loaders_out
     #------------------------------------------------------------ prepare data
     # a list of environment data loaders except for the test environment
     train_minibatches_iterator = zip(*train_loaders)
@@ -154,23 +158,6 @@ def train(args_dict, sweep_start_time= time.time(), is_time_out=False, zip_outpu
     n_steps = args.steps if args.steps is not None else hparams['steps']
 
     checkpoint_freq = args.checkpoint_freq or dataset.CHECKPOINT_FREQ
-
-    # ------------------------------------------------------------ for T-SNE visualization
-    if t_sne:
-        # -- training domains
-        minibatches_device_train = [(x.to(device), y.to(device)) for x, y in next(train_minibatches_iterator)]
-        x_train, y_train = minibatches_device_train[0] # use one domain as an example
-        train_xy_dict['feature'] = algorithm.featurizer(x_train).cpu().detach().numpy()
-        train_xy_dict['label'] = y_train.cpu().detach().numpy()
-        # -- test domains
-        minibatches_device_test = [(x.to(device), y.to(device)) for x, y in next(zip(*eval_loaders))]
-        x_test,y_test = minibatches_device_test[0]
-
-        test_xy_dict['feature'] = algorithm.featurizer(x_test).cpu().detach().numpy()
-        test_xy_dict['label'] = y_test.cpu().detach().numpy()
-
-        return train_xy_dict, test_xy_dict
-
 
     #------------------------------------------------------------ prepare save
     def save_checkpoint(filename):

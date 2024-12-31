@@ -15,6 +15,8 @@ DATASETS = [
     'CWRU_Bearing',
     'KAIST_MotorSys',
     'UBFC_Motor',
+    'UBFC_Stator_Current',
+    'UBFC_Rotor_Vibration',
 ]
 
 def get_dataset_class(dataset_name):
@@ -172,19 +174,20 @@ class CWRU_Bearing(MultipleDomainDataset):
 class UBFC_Motor(MultipleDomainDataset):
     ENVIRONMENTS =['0%', '25%', '50%']
 
-    def __init__(self, args, hparams):
+    def __init__(self, args, hparams, sig_type='current', object = 'stator'):
         super().__init__()
         if args.data_dir is None:
             raise ValueError('Data directory not specified!')
 
         # -- sample points
         self.seg_len = 1024
-        self.instance_size = 270 # per class
-        self.sig_type = 'current'
+        # self.instance_size = 270 # per class
+        self.sig_type = sig_type
+        self.object = object
 
-        self.class_name_list = ['normal',#0
-                                'UBS10%',  #1 umbalanced supply
-                                'UBS20%'  #2 umbalanced supply
+        self.class_name_list = ['normal',  #0
+                                'UBS10%',  #1 umbalanced supply, or Bearing fault
+                                'UBS20%'   #2 umbalanced supply, or Broken bars
                                     ] #3
 
         self.class_list = [i for i in range(len(self.class_name_list))]
@@ -197,12 +200,23 @@ class UBFC_Motor(MultipleDomainDataset):
         # -----------------------------------------------------------
         for env_id, env_name in enumerate(self.environments):
             aug_num = 0 if env_id in args.test_envs else args.aug_num
-            file_path = os.path.join(args.data_dir,  args.dataset, 'stator_'+self.sig_type+
+            file_path = os.path.join(args.data_dir,  args.dataset, self.object+'_'+self.sig_type+
                                      '_load'+env_name+'_3cls.mat')
             data_dict = loadmat(file_path)
             data, labels = data_dict['data'], data_dict['labels'].squeeze()
             self.datasets.append(dataset_transform(data, labels, self.input_shape, args.device,
                                                    aug_num, args.trial_seed))
+
+class UBFC_Stator_Current(UBFC_Motor):
+    # motor stator fault
+    def __init__(self, args, hparams):
+        super(UBFC_Stator_Current, self).__init__(args, hparams, sig_type='current')
+
+
+class UBFC_Rotor_Vibration(UBFC_Motor):
+    # motor rotor fault
+    def __init__(self, args, hparams):
+        super(UBFC_Rotor_Vibration, self).__init__(args, hparams, sig_type='vibration', object='rotor')
 
 if __name__ == '__main__':
 

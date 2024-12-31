@@ -3,6 +3,19 @@
 import itertools
 import numpy as np
 
+def get_methods(names):
+    methods = []
+    for n in names:
+        if n in ['iid','IID']:
+            methods.append(IIDAccuracySelectionMethod)
+        elif n in ['oneout','OneOut']:
+            methods.append(LeaveOneOutSelectionMethod)
+        elif n in ['oracle','Oracle']:
+            methods.append(OracleSelectionMethod)
+        else:
+            raise ValueError('selections are not matched! Please choose from: IID, OneOut, or Oracle')
+    return methods
+
 def get_test_records(records):
     """Given records with a common test env, get the test records (i.e. the
     records with *only* that single test env and no other test envs)"""
@@ -56,7 +69,7 @@ class OracleSelectionMethod(SelectionMethod):
     and checkpoints, but instead of taking the argmax over all
     checkpoints, we pick the last checkpoint, i.e. no early stopping."""
     name = "test-domain validation set (oracle)"
-
+    shortname = 'Oracle-select'
     @classmethod
     def run_acc(self, run_records):
         run_records = run_records.filter(lambda r:
@@ -75,7 +88,7 @@ class OracleSelectionMethod(SelectionMethod):
 class IIDAccuracySelectionMethod(SelectionMethod):
     """Picks argmax(mean(env_out_acc for env in train_envs))"""
     name = "training-domain validation set"
-
+    shortname = 'IID-select'
     @classmethod
     def _step_acc(self, record):
         """Given a single record, return a {val_acc, test_acc} dict."""
@@ -110,7 +123,7 @@ class IIDAccuracySelectionMethod(SelectionMethod):
 class LeaveOneOutSelectionMethod(SelectionMethod):
     """Picks (hparams, step) by leave-one-out cross validation."""
     name = "leave-one-domain-out cross-validation"
-
+    shortname = 'OneOut-select'
     @classmethod
     def _step_acc(self, records):
         """Return the {val_acc, test_acc} for a group of records corresponding

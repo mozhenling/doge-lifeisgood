@@ -32,7 +32,7 @@ def print_hparams_grid_results(args, selection_method):
     records = reporting.get_grouped_records(records, args.sub_algorithm)
 
     if args.sub_algorithm is not None:
-        file_name = args.dataset+'_'+args.algorithm + '_'+ args.sub_algorithm+'_Env'+str(args.test_env)
+        file_name = args.dataset+'_'+args.algorithm + '_'+ args.sub_algorithm+'_Env'+str(args.test_env)+'_'+selection_method.name
         records = records.filter(
             lambda r:
             r['dataset'] == args.dataset and
@@ -41,7 +41,7 @@ def print_hparams_grid_results(args, selection_method):
             r['test_env'] == args.test_env
         )
     else:
-        file_name = args.dataset + '_' + args.algorithm  + '_Env' + str(args.test_env)
+        file_name = args.dataset + '_' + args.algorithm  + '_Env' + str(args.test_env)+'_'+selection_method.name
         records = records.filter(
             lambda r:
             r['dataset'] == args.dataset and
