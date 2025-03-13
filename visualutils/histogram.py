@@ -4,7 +4,7 @@ import matplotlib
 matplotlib.use('Qt5Agg')
 
 # Load the data from the Excel file
-file_path = r'YourFreq.ERM.xlsx'  # Replace with your actual file path
+file_path = r'Freq.ERM.xlsx'  # Replace with your actual file path
 df = pd.read_excel(file_path, engine='openpyxl')
 
 # Extract and sort the relevant columns by 'Freq.ERM'
@@ -13,7 +13,7 @@ algorithms = df_sorted['Algorithm']
 frequencies = df_sorted['Freq.ERM']
 
 # Define hatch patterns for black-and-white differentiation
-hatch_patterns = ['/', '\\', '|', '-', '+', 'x',  '//', '\\\\', '||', '--', '++', 'xx','.','o', 'O', '*']
+hatch_patterns = ['/', '\\', '|', '-', '+', 'x', '//', '\\\\', '||', '--', '++', 'xx', '.', 'o', 'O', '*', '..', 'oo', '**']
 
 # Plotting the histogram
 plt.figure(figsize=(10, 3.5))

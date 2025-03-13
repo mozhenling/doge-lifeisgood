@@ -2,6 +2,9 @@
 
 from algorithms.classes.Lifeisgood import Lifeisgood
 
+from algorithms.classes.MixStyle import MixStyle
+from algorithms.classes.SCIRM import SCIRM
+from algorithms.classes.MDGCML import MDGCML
 from algorithms.classes.iDAG import iDAG
 from algorithms.classes.SAGM import SAGM
 from algorithms.classes.VNE import VNE
@@ -23,6 +26,9 @@ from algorithms.classes.SelfReg import SelfReg
 ALGORITHMS = [
     'Lifeisgood',
 
+    'MixStyle',
+    'SCIRM',
+    'MDGCML',
     'iDAG',
     'SAGM', #wang2023sharpness
     'VNE', #Kim_2023_CVPR

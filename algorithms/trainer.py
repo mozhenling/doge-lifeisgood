@@ -184,7 +184,7 @@ def train(args_dict, sweep_start_time= time.time(), is_time_out=False, algorithm
         checkpoint_vals['step_time'].append(time.time() - step_start_time)
         time_monitor = time.time() - sweep_start_time
         if zip_output_time is not None:
-            if time_monitor >zip_output_time:
+            if time_monitor > zip_output_time:
                 is_time_out = True
                 break # break the training loop
         # --------------------------------------------------------------------------------------

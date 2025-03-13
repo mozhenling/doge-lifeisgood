@@ -4,7 +4,7 @@ echo '------- update git and remote --------'
 
 git add .
 
-git commit . -m 'add nomenclature'
+git commit . -m 'new benchmark'
 
 git push origin master
 

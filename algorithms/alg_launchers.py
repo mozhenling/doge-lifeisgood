@@ -25,7 +25,7 @@ def plain_launcher(args_list, sweep_start_time, zip_output_dir, output_dir, zip_
     is_time_out = False
     for i, args in enumerate(args_list):
         print(f'About to launch job #{i+1}')
-        is_time_out = train(args, sweep_start_time, is_time_out, zip_output_time)
+        is_time_out = train(args_dict=args, sweep_start_time=sweep_start_time, is_time_out=is_time_out, zip_output_time=zip_output_time)
         if is_time_out:
             print(f'Job #{i+1} was incomplete due to time out!')
             print(f'({len(args_list) - i} jobs incomplete in total)')

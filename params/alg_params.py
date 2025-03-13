@@ -65,6 +65,17 @@ def _hparams(algorithm, dataset, random_seed, args):
         _hparam('swapping_loss_weight', 1, lambda r: 10 ** r.uniform(-1.5, 0))
 
     # ------------------------------------------------------------------------
+    elif algorithm in ["MixStyle"]:
+        _hparam('mixup_alpha', 0.2, lambda r: 10 ** r.uniform(-1, 1))
+
+    elif algorithm in ["SCIRM"]:
+        _hparam('weight_irm', 1, lambda r: 10 ** r.uniform(-1, 2))
+        _hparam('weight_spar', 0.001, lambda r: 10 ** r.uniform(-3, -1))
+
+    elif algorithm in ["MDGCML"]:
+        _hparam("gamma", 1e-3, lambda r: 10 ** r.uniform(-4.5, -2.5))
+        _hparam("delta", 1e-3, lambda r: 10 ** r.uniform(-4.5, -2.5))
+
     elif algorithm in ["iDAG", "iDAGamp", "iDAGCMNIST"]:
         _hparam("dag_anneal_steps",int(args.steps * 0.1),
                 lambda r: int(args.steps*r.uniform(0.1, 0.9)) )
