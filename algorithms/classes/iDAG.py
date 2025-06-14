@@ -61,7 +61,7 @@ class iDAG(Algorithm):
             {"params": self.network.parameters()},
             {"params": self.rec_classifier.parameters()},
         ]
-        self.optimizer = get_optimizer(params=self.network.parameters(), hparams=self.hparams, args=self.args)
+        self.optimizer = get_optimizer(params=params, hparams=self.hparams, args=self.args)
         self.scheduler = get_scheduler(optimizer=self.optimizer, args=self.args)
 
         self.loss_proto_con = PrototypePLoss(num_classes, hparams['temperature'])
