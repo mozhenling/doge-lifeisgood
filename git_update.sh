@@ -4,7 +4,7 @@ echo '------- update git and remote --------'
 
 git add .
 
-git commit . -m 'accepted'
+git commit . -m 'fix a bug'
 
 git push origin master
 

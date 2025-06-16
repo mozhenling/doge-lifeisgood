@@ -48,7 +48,7 @@ class VNE(Algorithm):
         # Regularization
         epsilon = 1e-10
         EP = epsilon*torch.eye(Z.shape[0], Z.shape[1]).to(Z.device)
-        sing_val = torch.svd((Z+EP) / (np.sqrt(Z.shape[0]))[1]+epsilon)
+        sing_val = torch.svd((Z + EP) / (np.sqrt(Z.shape[0]) + epsilon))[1]
         eig_val = sing_val ** 2
         return - (eig_val * torch.log(eig_val)).nansum()
 
